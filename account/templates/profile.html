@@ -1,0 +1,16 @@
+{% extends 'partials/base.html' %}
+{% load materializecss %}
+{% block title %}
+My Profile
+{% endblock %}
+{% block content %}
+<h1>My Profile:</h1>
+<form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+<h2><a href="{% url 'my_deck' %}">Go to My Deck</a></h2>
+
+{% endblock %}
+

@@ -1,0 +1,1 @@
+web: gunicorn yugioh_django_proj.wsgi --log-file -

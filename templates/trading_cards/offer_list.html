@@ -1,0 +1,55 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+    My Offers
+{% endblock %}
+{% block content %}
+    <h2>My offers :</h2>
+    <table class="centered ">
+                            <thead>
+                            <tr>
+                                <th>You are Offering</th>
+                                <th>To (user)</th>
+                                <th>To Get</th>
+                                <th>Changed you mind ?</th>
+
+                            </tr>
+                            </thead>
+                        <hr>
+                            <tbody>
+    {% for offer in offers %}
+        {% with c=offer.card %}
+            {% with t=offer.trade %}
+                {% if user.profile.id == offer.profile_id %}
+
+                    <tr>
+                                <td><p><u><strong>{{ c.name }}</strong></u></p><img src="{{ c.img_small }}" alt="{{ c.name }}"></td>
+                                <td>{{ t.profile|upper }}</td>
+                                <td><p><u><strong>{{ t }}</strong></u></p><img src="{{ t.card.img_small }}"
+                                                                                    alt="{{ t }}"></td>
+                        <td>
+                            <form method="post" action="{% url 'offer-delete' offer.id %}">
+                                <a class="btn btn-small" href="{% url 'offer-edit' offer.id %}">Edit</a>
+                                {% csrf_token %}
+                                <button class="btn-small red" type="submit">Delete</button>
+                            </form>
+                        </td>
+                            </tr>
+
+
+{#                    <p>You offer this card :{{ c.name }}</p>#}
+{#                    <p>TO {{ t.profile }}</p>#}
+{#                    <p>to get this card : {{ t }}</p>#}
+{#                    <form method="post" action="{% url 'offer-delete' offer.id %}">#}
+{#                        <a class="btn btn-small" href="{% url 'offer-edit' offer.id %}">Edit</a>#}
+{#                        {% csrf_token %}#}
+{#                        <button class="btn-small red" type="submit">Delete</button>#}
+{#                    </form>#}
+{#                    <br>#}
+                {% endif %}
+            {% endwith %}
+        {% endwith %}
+    {% endfor %}
+    </tbody>
+                        </table>
+{% endblock %}

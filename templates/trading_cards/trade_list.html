@@ -1,0 +1,58 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+    Transactions
+{% endblock %}
+
+{% block content %}
+    <h1>Offers made for your trade :</h1>
+
+                        <table class="centered ">
+                            <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Offers</th>
+                                <th>For</th>
+                                <th>Deal</th>
+
+                            </tr>
+                            </thead>
+                        <hr>
+                            <tbody>
+    {% for trade in trades %}
+        {% if user.profile.id == trade.profile_id %}
+            {% with c=trade.card %}
+                {% for offer in trade.offers.all %}
+                    {% if offer.trade.profile == user.profile %}
+
+                            <tr>
+                                <td>{{ offer.profile|upper }}</td>
+                                <td><p><u><strong>{{ offer.card }}</strong></u></p><img src="{{ offer.card.img_small }}"
+                                                                                        alt="{{ offer.card }}"></td>
+                                <td><p><u><strong>{{ c.name }}</strong></u></p><img src="{{ c.img_small }}"
+                                                                                    alt="{{ c.name }}"></td>
+                                <td>
+                                        <a class="btn btn-small" href="{% url 'finalize-offer' offer.id 1%}">Accept</a><br>
+                                        <br>
+                                        <a class="btn-small red" href="{% url 'finalize-offer' offer.id 0%}">Decline</a>
+                                </td>
+                            </tr>
+
+{#                        <p>user : {{ offer.profile }}</p>#}
+{#                        <p>offer you this card : {{ offer.card }}</p>#}
+{#                        <p>to get this card : {{ c.name }}</p>#}
+{#                        <form method="post" action="{% url 'offer-delete' offer.id %}">#}
+                            {#                      <a class="btn btn-small" href="{% url 'offer-edit' offer.id %}">Accept</a>#}
+{#                            {% csrf_token %}#}
+{#                            <button class="btn-small red" type="submit">Decline</button>#}
+{#                        </form>#}
+{#                        <br>#}
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+                            </tbody>
+                        </table>
+
+{% endblock %}

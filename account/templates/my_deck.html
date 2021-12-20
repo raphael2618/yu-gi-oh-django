@@ -1,0 +1,58 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}
+    My Deck
+{% endblock %}
+
+{% block css %}
+    <style>
+        a:hover {
+        color: white !important;
+        text-decoration: none !important;
+        }
+    </style>
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+    <br>
+
+    <h2>My Deck :</h2>
+
+    <br>
+    {% if user.is_authenticated %}
+        <div class="row">
+            {% for foo in user.profile.deck.all %}
+                <div class="card col-11 col-sm-5 col-md-3 col-xl-2 m-2 text-center" style="width: 18rem">
+                    <img class="card-img-top" src="{{ foo.img }}"
+                         alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ foo.name }}</h5>
+{#                        <p class="card-text">{{ foo.desc|truncatechars:50 }}</p>#}
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#{{ foo.id }}"
+                                aria-expanded="true" aria-controls="collapseOne">
+                            Description
+                        </button>
+                        <div id="{{ foo.id }}" class="collapse" aria-labelledby="headingOne"
+                             data-parent="#accordion">
+                            <div class="card-body">
+                                {{ foo.desc }}
+                            </div>
+                        </div>
+                        {% if foo.name not in trade.all|join:"  " %}
+                        <a href="{% url 'make_trade' foo.id %}" class="btn btn-primary">Create Trade</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+{% endblock %}

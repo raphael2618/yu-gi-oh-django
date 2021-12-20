@@ -1,0 +1,98 @@
+{#{% extends 'partials/base.html' %}#}
+{#todo: create partials to use only extends and if statement ?#}
+{#{% load humanize %}#}
+{#{% block content %}#}
+{##}
+{#    <h1>Welcome {{ user.first_name }}!</h1>#}
+{#    {% if user.username %}#}
+{#        <h2>Your trade:</h2>#}
+{#        <table>#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>You Traded</th>#}
+{#            <th>With</th>#}
+{#            <th>To Get</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#<tbody>#}
+{#        <div class="row">#}
+{#        {% for trade in trades %}#}
+{##}
+{#            #}
+{#          <tr>#}
+{#            <td>{{ trade.card.name }}</td>#}
+{#            <td>Eclair</td>#}
+{#            <td>$0.87</td>#}
+{#          </tr>#}
+{##}
+{#            <div class="card col 11 col-sm-5 col-md-3 col-xl-2 text-center" style="margin: 10px !important;">#}
+{#                <div class="card center" style="width: 18rem; margin: 10px">#}
+{#                    <p class="card-text">{{ trade.timestamp | naturaltime }}</p>#}
+{#                    {% if trade.profile == user.profile or trade.card == request.profile.deck %}#}
+{#                        <br>#}
+{#                    {% else %}#}
+{#                        <h5>From {{ trade.profile.user }}:</h5>#}
+{#                        <br>#}
+{#                    {% endif %}#}
+{#                    <img class="card-img-top responsive-img" src="{{ trade.card.img }}" alt="Card image cap">#}
+{#                    <div class="card-body">#}
+{#                        <h5 class="card-title">{{ trade.card.name }}</h5>#}
+{#                        <p class="card-text">{{ trade.get_status_display }}</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    {% else %}#}
+{#        <h3>You need to <a href="{% url 'login' %}">Login</a></h3>#}
+{#    {% endif %}#}
+{##}
+{#{% endblock %}#}
+
+{% extends "partials/base.html" %}
+
+{% block title %}
+    My Offers
+{% endblock %}
+{% block content %}
+    <h2>Transactions history :</h2>
+    <table class="centered ">
+        <thead>
+        <tr>
+            <th>You offered</th>
+            <th>To (user)</th>
+            <th>To Get</th>
+        </tr>
+        </thead>
+        <hr>
+        <tbody>
+        {% for offer in offers %}
+            {% with c=offer.card %}
+                {% with t=offer.trade %}
+                    {% if user.profile.id == offer.profile_id %}
+
+                        <tr>
+                            <td><p><u><strong>{{ c.name }}</strong></u></p><img src="{{ c.img_small }}"
+                                                                                alt="{{ c.name }}"></td>
+                            <td>{{ t.profile|upper }}</td>
+                            <td><p><u><strong>{{ t }}</strong></u></p><img src="{{ t.card.img_small }}"
+                                                                           alt="{{ t }}"></td>
+
+                        </tr>
+
+
+                        {#                    <p>You offer this card :{{ c.name }}</p>#}
+                        {#                    <p>TO {{ t.profile }}</p>#}
+                        {#                    <p>to get this card : {{ t }}</p>#}
+                        {#                    <form method="post" action="{% url 'offer-delete' offer.id %}">#}
+                        {#                        <a class="btn btn-small" href="{% url 'offer-edit' offer.id %}">Edit</a>#}
+                        {#                        {% csrf_token %}#}
+                        {#                        <button class="btn-small red" type="submit">Delete</button>#}
+                        {#                    </form>#}
+                        {#                    <br>#}
+                    {% endif %}
+                {% endwith %}
+            {% endwith %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

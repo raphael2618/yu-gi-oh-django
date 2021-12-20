@@ -1,0 +1,18 @@
+{% extends 'partials/base.html' %}
+{%  load humanize %}
+{% block title %}
+Forum
+{% endblock %}
+
+{% block content %}
+    <ul>
+    </ul>
+      <ul class="collection with-header">
+          <li class="collection-header"><h4>HomePage Forum</h4><a href="{% url 'forum-add' %}">Add</a></li>
+        {% for forum in forums %}
+            <li class="collection-item"><div>{{ forum.title }} |
+                by <b><a href="{% url 'forum-user' forum.user %}">{{ forum.user }}</a></b> |
+                <i>{{ forum.created_at | naturaltime }}</i><a href="{% url 'forum-detail' forum.slug%}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+        {% endfor %}
+      </ul>
+{% endblock %}

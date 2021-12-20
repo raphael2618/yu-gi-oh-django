@@ -1,0 +1,38 @@
+{% extends 'partials/base.html' %}
+{#todo: create partials to use only extends and if statement ?#}
+{% load humanize %}
+{% block content %}
+
+    <h1>Welcome {{ user.first_name }}!</h1>
+    {% if user.username %}
+        <h2>Here are some card to trade :</h2>
+        <div class="row">
+        {% for trade in trades %}
+            <div class="card col 11 col-sm-5 col-md-3 col-xl-2 text-center" style="margin: 10px !important;">
+                <div class="card center" style="width: 18rem; margin: 10px">
+                    <p class="card-text">{{ trade.timestamp | naturaltime }}</p>
+                    {% if trade.profile == user.profile or trade.card == request.profile.deck %}
+                        <h5><strong>This is your Trade</strong></h5>
+                        <br>
+                    {% else %}
+                        <h5>From {{ trade.profile.user }}:</h5>
+                        <br>
+                    {% endif %}
+                    <img class="card-img-top responsive-img" src="{{ trade.card.img }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ trade.card.name }}</h5>
+                        <p class="card-text">{{ trade.get_status_display }}</p>
+                        {% if trade.profile != user.profile %}
+                            <a href="{% url 'make_offer' trade.id %}" class="btn btn-primary">Make Offer</a>
+                            {% else %}
+                            <a href="{% url 'trades' %}" class="btn red">Your Trade</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h3>You need to <a href="{% url 'login' %}">Login</a></h3>
+    {% endif %}
+
+{% endblock %}

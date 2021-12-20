@@ -1,0 +1,12 @@
+/*body {*/
+/*background-image: url("https://pbs.twimg.com/media/EWITy1SWAAAJCKF?format=jpg&name=medium");*/
+/*}*/
+
+/*.container{*/
+/*    background-color: lightgray;*/
+/*}*/
+
+.anchor, .anchor:hover, .anchor:active, .anchor:focus{
+    text-decoration: none!important;
+    color: inherit!important;
+}

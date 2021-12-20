@@ -1,0 +1,14 @@
+{% extends 'partials/base.html' %}
+{% load materializecss %}
+{% block title %}
+Add Forum
+{% endblock %}
+
+{% block content %}
+<h1>Add forum:</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|materializecss }}
+        <input type="submit" class="btn" value="add">
+    </form>
+{% endblock %}

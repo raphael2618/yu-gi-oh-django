@@ -1,0 +1,54 @@
+{% extends "partials/base.html" %}
+{% load humanize %}
+{% load materializecss %}
+{% block title %}
+    {{ forums.title }}
+{% endblock %}
+
+{% block content %}
+    <ul class="collection with-header">
+        {% if request.user ==  forums.user %}
+
+            <form method="post" action="{% url 'forum-delete' forums.id %}">
+                <button class="btn-small"><a class="anchor" href="{% url 'forum-edit' forums.id %}">Edit</a></button>
+                {% csrf_token %}
+                <button class="btn-small red" type="submit">Delete</button>
+            </form>
+
+        {% endif %}
+        <li class="collection-header"><h4>{{ forums.title }}</h4></li>
+        <li class="collection-item">{{ forums.desc }}</li>
+        <span> - <i>{{ object.created_at | naturaltime }}</i></span>
+    </ul>
+    <br>
+    <!-- Display comment -->
+    <h5><u>A few Comments :</u></h5>
+    {% for comment in forums.comment_set.all %}
+        <ul class="collection">
+            <li class="collection-item">{{ comment.desc }}
+                {% if request.user == comment.user %}
+                    <form class="right" method="post" action="{% url 'delete-comment' comment.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-floating btn-small waves-effect waves-light red"><i
+                                class="material-icons">delete</i></button>
+                    </form>
+                {% endif %}
+
+            </li>
+            <span style="font-size: 12px;"><i>by {{ comment.user }}</i>
+
+                {% if request.user == comment.user %}
+                    <a href="{% url 'edit-comment' comment.id %}"> - Edit Comment</a>
+                {% endif %}
+
+    </span></ul></p>
+
+    {% endfor %}
+    <b>Add a Comment : </b>
+    <form method="post" action="{% url 'add-comment' forums.id %}">
+        {% csrf_token %}
+        {{ form_comment | materializecss }}
+        <button type="submit" class="btn-floating btn-large waves-effect waves-light green"><i class="material-icons">add</i>
+        </button>
+    </form>
+{% endblock %}

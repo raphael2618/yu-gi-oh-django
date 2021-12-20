@@ -1,0 +1,26 @@
+{% extends "partials/base.html" %}
+{% load materializecss %}
+{% block title %}
+Create Offers
+{% endblock %}
+
+{% block content %}
+
+    <h1>Here is the offer :</h1>
+    {% if edit %}
+    <h4>{{ object.trade.card }}</h4>
+    <img src="{{ object.trade.card.img_small }}" alt="YuGiOh">
+    {% else %}
+            <h4>{{ trade.card }}</h4>
+    <img src="{{ trade.card.img_small }}" alt="YuGiOh">
+    {% endif %}
+    <hr>
+    <h4>What Card are you offering to get it ?</h4>
+    <form method="post">
+    {% csrf_token %}
+    {{ form|materializecss }}
+        <input type="submit" class="btn" value="Make a Deal!">
+    </form>
+    <br>
+    <br>
+{% endblock %}
